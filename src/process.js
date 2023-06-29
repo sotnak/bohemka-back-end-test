@@ -19,7 +19,6 @@ const processReq = async (req) => {
     let data = removeBoundaries(req.body, req.headers)
     const length = data.length
     data = reduceSize(data, env.targetSize)
-    data = Buffer.from(data)
 
     const prepEnd = Date.now()
 

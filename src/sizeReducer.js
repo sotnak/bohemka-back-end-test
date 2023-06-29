@@ -12,7 +12,7 @@ const reduceSize = (data, targetSize)=>{
         res.push(data[i])
     }
 
-    return res;
+    return Buffer.from(res);
 }
 
 module.exports.reduceSize = reduceSize
