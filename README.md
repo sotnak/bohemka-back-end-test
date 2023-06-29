@@ -1,10 +1,11 @@
 ## Back-End Test
 HTTP API in Node.js with a single file upload POST route /file.
-The file is transported as part of multipart/form-data.
+The file is transported as part of multipart/form-data and is processed in chunks.
+Chunks are hashed separately and the final hash is hash of those hashes.
 
 Both asynchronous and parallel approach is used.
 I/O operations are handled asynchronously by master worker.
-CPU heavy operations (Buffer preparation and hash calculation) are handled by workers from pool.
+CPU heavy operations (hash calculation) are handled by workers from pool.
 
 This API is connected to PostgreSQL.
 Both the database and the API can be started by ``docker compose up -d``.
@@ -18,6 +19,5 @@ API is configurable through environment variables.
 - PGUSER - postgres user
 - PGPASSWORD - postgres password
 - MAX_WORKERS - maximum of workers in pool
-- MAX_QUEUESIZE - maximum of requests in queue
-- MAX_SIZE_TO_HASH - maximum size of buffer to hash
+- MAX_QUEUESIZE - maximum of chunks in queue
 ---

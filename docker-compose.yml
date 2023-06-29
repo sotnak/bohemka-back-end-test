@@ -23,7 +23,6 @@ services:
     depends_on:
       - db
     environment:
-      - MAX_SIZE_TO_HASH=10000000
       - PGHOST=db
       - PGUSER=postgres
       - PGPASSWORD=password
