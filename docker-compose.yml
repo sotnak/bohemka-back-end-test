@@ -1,0 +1,32 @@
+services:
+  db:
+    container_name: db
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - TZ=GMT+2
+      - PGTZ=GMT+2
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - MAX_SIZE_TO_HASH=10000000
+      - PGHOST=db
+      - PGUSER=postgres
+      - PGPASSWORD=password
+
+volumes:
+  postgres-data:
