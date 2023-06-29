@@ -17,7 +17,6 @@ API is configurable through environment variables.
 - PGPORT - postgres port
 - PGUSER - postgres user
 - PGPASSWORD - postgres password
-- API_PORT - api port
 - MAX_WORKERS - maximum of workers in pool
 - MAX_QUEUESIZE - maximum of requests in queue
 - MAX_SIZE_TO_HASH - maximum size of buffer to hash

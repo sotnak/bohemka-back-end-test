@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {processReq} = require("./src/process");
 const {dbInsert} = require("./src/db");
-const env = require("./src/env")
 
 const app = express()
+const port = 8080
 
 app.use(bodyParser.raw({type: 'multipart/form-data', limit:'200gb'}))
 app.route('/file').post(async (req, res, next)=>{
@@ -35,6 +35,6 @@ app.route('/file').post(async (req, res, next)=>{
     res.send(message)
 })
 
-app.listen(env.port, ()=>{
-    console.log(`listening on port ${env.port}`)
+app.listen(port, ()=>{
+    console.log(`listening on port ${port}`)
 })
