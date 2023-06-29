@@ -3,6 +3,7 @@ const busboy = require("connect-busboy");
 const {processReq} = require("./src/process");
 const {dbInsert} = require("./src/db");
 const ChunkBuffer = require("./src/ChunkBuffer");
+const env = require("./src/env");
 
 const app = express()
 const port = 8080
@@ -19,7 +20,7 @@ app.route('/file').post((req, res, next)=>{
         req.busboy.on('file', (_, file) => {
             const hashPromises = []
             let length = 0;
-            const chunkBuffer = new ChunkBuffer(16 * 1024 * 1024)
+            const chunkBuffer = new ChunkBuffer(env.chunkSize)
 
             file.on('data', (chunk) => {
                 length+=chunk.length

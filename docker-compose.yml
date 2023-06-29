@@ -26,6 +26,7 @@ services:
       - PGHOST=db
       - PGUSER=postgres
       - PGPASSWORD=password
+      - CHUNK_SIZE=33554432
 
 volumes:
   postgres-data:
