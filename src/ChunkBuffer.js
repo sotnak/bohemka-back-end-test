@@ -17,10 +17,24 @@ class ChunkBuffer{
         return undefined;
     }
 
-    finish(){
-        const res = this.buffer
-        this.buffer = []
-        return Buffer.from(res);
+    runIfOverflown(fun){
+        if(this.buffer.length > this.threshold){
+            const buff = Buffer.from(this.buffer.splice(0,this.threshold));
+            fun(buff)
+            return true;
+        }
+
+        return false;
+    }
+
+    finish(fun){
+        if(this.buffer.length > 0){
+            const buff = Buffer.from(this.buffer.splice(0));
+            fun(buff)
+            return true;
+        }
+
+        return false;
     }
 }
 

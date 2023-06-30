@@ -11,6 +11,7 @@ process.on('exit',async ()=>{ await pool.terminate(true)})
 process.on('SIGINT',async ()=>{ await pool.terminate(true); process.exit()})
 
 const processReq = async (data) => {
+    //console.log(pool.stats())
     return await pool.exec("hashWorker", [data])
 }
 

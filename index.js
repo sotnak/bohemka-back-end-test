@@ -12,7 +12,8 @@ app.use(busboy({
     immediate: true,
     limits: {
         fileSize: 200 * 1024 * 1024 * 1024,
-    }}))
+    },
+}))
 
 app.route('/file').post((req, res, next)=>{
     const start = Date.now();
@@ -22,18 +23,21 @@ app.route('/file').post((req, res, next)=>{
             let length = 0;
             const chunkBuffer = new ChunkBuffer(env.chunkSize)
 
+            const hashFun = (buff)=>{hashPromises.push(processReq(buff))}
+
             file.on('data', (chunk) => {
                 length+=chunk.length
                 chunkBuffer.push(chunk)
 
-                //check if enough data to hash
-                const buffered = chunkBuffer.getIfOverflown()
-                if(buffered) hashPromises.push(processReq(buffered))
+                chunkBuffer.runIfOverflown(hashFun)
             })
             file.on('close',async ()=>{
                 //hash rest of the file
-                const buffered = chunkBuffer.finish()
-                if(buffered) hashPromises.push(processReq(buffered))
+                let overflown = true;
+                while(overflown){
+                    overflown = chunkBuffer.runIfOverflown(hashFun)
+                }
+                chunkBuffer.finish(hashFun)
 
                 let hashes = await Promise.all(hashPromises)
                 hashes = hashes.join("")
