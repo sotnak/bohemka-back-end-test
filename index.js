@@ -45,15 +45,17 @@ app.route('/file').post((req, res, next)=>{
                 //hash all hashes
                 const hash = await processReq(Buffer.from(hashes))
 
+                const end = Date.now();
+
+                const execTime = end - start;
+
                 try {
-                    await dbInsert(hash, length)
+                    await dbInsert(hash, length, execTime)
                 } catch (e) {
                     next(e)
                     console.warn(e)
                     return;
                 }
-
-                const end = Date.now();
 
                 console.log(`Execution time: ${end - start} ms`);
                 console.log({hash, size: length})
