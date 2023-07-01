@@ -10,9 +10,13 @@ const pool = workerpool.pool(__dirname + "/worker.js", poolOptions)
 process.on('exit',async ()=>{ await pool.terminate(true)})
 process.on('SIGINT',async ()=>{ await pool.terminate(true); process.exit()})
 
-const processReq = async (data) => {
-    //console.log(pool.stats())
-    return await pool.exec("hashWorker", [data])
+const processBuffers = async (buffers) => {
+    return await pool.exec("hashBuffers", [buffers])
 }
 
-module.exports.processReq = processReq
+const processHashes = async (hashes) => {
+    return await pool.exec("hashStrings", [hashes])
+}
+
+module.exports.processBuffers = processBuffers
+module.exports.processHashes = processHashes

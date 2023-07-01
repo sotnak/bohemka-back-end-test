@@ -1,6 +1,6 @@
 const express = require('express');
 const busboy = require("connect-busboy");
-const {processReq} = require("./src/process");
+const {processBuffers, processHashes} = require("./src/process");
 const {dbInsert} = require("./src/db");
 const ChunkBuffer = require("./src/ChunkBuffer");
 const env = require("./src/env");
@@ -23,7 +23,7 @@ app.route('/file').post((req, res, next)=>{
             let length = 0;
             const chunkBuffer = new ChunkBuffer(env.chunkSize)
 
-            const hashFun = (buff)=>{hashPromises.push(processReq(buff))}
+            const hashFun = (buff)=>{hashPromises.push(processBuffers(buff))}
 
             file.on('data', (chunk) => {
                 length+=chunk.length
@@ -40,10 +40,9 @@ app.route('/file').post((req, res, next)=>{
                 chunkBuffer.finish(hashFun)
 
                 let hashes = await Promise.all(hashPromises)
-                hashes = hashes.join("")
 
                 //hash all hashes
-                const hash = await processReq(Buffer.from(hashes))
+                const hash = await processHashes(Buffer.from(hashes))
 
                 const end = Date.now();
 
