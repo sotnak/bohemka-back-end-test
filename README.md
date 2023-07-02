@@ -22,3 +22,7 @@ API is configurable through environment variables.
 - MAX_WORKERS - maximum of workers in pool
 - MAX_QUEUESIZE - maximum of chunks in queue
 ---
+For testing purposes, the test.html and the test.http files were created.
+- test.http represents an image upload scenario.
+- test.html is a simple page with a form capable of uploading any file.
+---
